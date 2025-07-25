@@ -37,10 +37,10 @@ const urlSchema = new mongoose.Schema({
 let Url: mongoose.Model<UrlDocument, UrlModel>;
 
 try {
-  //@ts-ignore
+  //@ts-expect-error
   Url = mongoose.model("Url", urlSchema);
 } catch (error) {
-  //@ts-ignore
+  //@ts-expect-error
   Url = mongoose.model<UrlDocument, UrlModel>("Url");
 }
 
