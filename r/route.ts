@@ -3,8 +3,10 @@ import dbConnect from "@/app/lib/connectDb";
 import Url from "@/app/models/urlSchema";
 
 export async function GET(req: NextRequest) {
-  const fullUrl = req.nextUrl.href;
-  const urlId = fullUrl.split("?")[1].split("=")[0];
+  const urlId = req.nextUrl.searchParams.keys().next().value;
+    if (!urlId) {
+    return NextResponse.json({ status: 400, msg: "Missing URL ID" });
+    }
   try {
     await dbConnect();
     const url = await Url.findOne({
