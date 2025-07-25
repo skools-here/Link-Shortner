@@ -18,7 +18,7 @@ export async function POST(req:NextRequest){
         return NextResponse.json({ shortendUrl: found.shortUrl });        }
         else{
             const urlId=nanoid(3)
-            const base=`${req.nextUrl.protocol}//${req.nextUrl.host}`;
+            const base=`https://link-shortner-skools.vercel.app`;
             const shortUrl=`${base}/r?${urlId}`;
 
                  await Url.create({
