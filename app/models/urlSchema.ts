@@ -1,47 +1,27 @@
-import mongoose,{Document} from "mongoose";
+import mongoose, { Document, Model, Schema } from "mongoose";
 
-interface UrlDocument extends Document{
-    urlId:string,
-    origUrl: string;
-    shortUrl: string;
-    clicks: number;
-    date: Date;
+// Define the interface for a single URL document
+interface UrlDocument extends Document {
+  urlId: string;
+  origUrl: string;
+  shortUrl: string;
+  clicks: number;
+  date: Date;
 }
 
-interface UrlModel extends mongoose.Model<UrlDocument> {}
+// Define the model type
+type UrlModel = Model<UrlDocument>;
 
-const urlSchema = new mongoose.Schema({
-  urlId: {
-    type: String,
-    required: true,
-  },
-  origUrl: {
-    type: String,
-    required: true,
-  },
-  shortUrl: {
-    type: String,
-    required: true,
-  },
-  clicks: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
+// Define the schema
+const urlSchema = new Schema<UrlDocument>({
+  urlId: { type: String, required: true },
+  origUrl: { type: String, required: true },
+  shortUrl: { type: String, required: true },
+  clicks: { type: Number, required: true, default: 0 },
+  date: { type: Date, default: Date.now },
 });
 
-let Url: mongoose.Model<UrlDocument, UrlModel>;
-
-try {
-  //@ts-expect-error
-  Url = mongoose.model("Url", urlSchema);
-} catch (error) {
-  //@ts-expect-error
-  Url = mongoose.model<UrlDocument, UrlModel>("Url");
-}
+// Use a safe model redefinition check
+const Url = mongoose.models.Url as UrlModel || mongoose.model<UrlDocument>("Url", urlSchema);
 
 export default Url;
